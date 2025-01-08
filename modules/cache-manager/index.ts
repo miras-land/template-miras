@@ -1,11 +1,29 @@
-export const store = new Map<string, any>()
+import { IStore } from './store.interface.ts'
+import { MemoryStore } from '@/modules/cache-manager/stores/memory.store.ts'
 
-export function get(key: string)
+export class CacheManager implements IStore
 {
-    return store.get(key)
-}
+    constructor(
+        private readonly store: IStore = new MemoryStore(),
+    ) {}
 
-export function set(key: string, value: any)
-{
-    return store.set(key, value)
+    getAll()
+    {
+        return this.store.getAll()
+    }
+
+    get<T = any>(key: string)
+    {
+        return this.store.get(key) as T
+    }
+
+    set(key: string, value: any)
+    {
+        this.store.set(key, value)
+    }
+
+    delete(key: string)
+    {
+        this.store.delete(key)
+    }
 }
