@@ -7,6 +7,16 @@ export class CacheManager implements IStore
         private readonly store: IStore = new MemoryStore(),
     ) {}
 
+    has(key: string): boolean
+    {
+        return this.store.getAll().has(key)
+    }
+
+    getKeys(): string[]
+    {
+        return Array.from(this.store.getAll().keys())
+    }
+
     getAll()
     {
         return this.store.getAll()
@@ -17,9 +27,9 @@ export class CacheManager implements IStore
         return this.store.get(key) as T
     }
 
-    set(key: string, value: any)
+    set(key: string, value: any, ttl?: number)
     {
-        this.store.set(key, value)
+        this.store.set(key, value, ttl)
     }
 
     delete(key: string)
